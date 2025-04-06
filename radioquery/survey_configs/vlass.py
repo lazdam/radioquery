@@ -56,7 +56,11 @@ class VlassQuery:
         best_file = None
         
         # Ensure the configuration file path is absolute.
-        config_path = os.path.expanduser(config_path)
+        if not os.path.isabs(config_path):
+            config_path = os.path.join(os.path.dirname(__file__), config_path)
+        print(config_path)
+        
+
         start = time.time()
         with open(config_path, "r") as f:
             for line in f:

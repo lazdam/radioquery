@@ -23,6 +23,11 @@ setup(
     name="radioquery",
     version="0.0.1",
     packages=find_packages(),
+    include_package_data=True,  # Tells setuptools to include files specified in MANIFEST.in
+    package_data={
+        # Include any .txt files in the vlass_configs subfolder
+        "radioquery": ["survey_configs/vlass_configs/*.txt"],
+    },
     install_requires=[
         "numpy<2.0.0",    
         "astropy>=6.0.1",
