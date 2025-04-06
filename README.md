@@ -51,7 +51,7 @@ print("Downloaded FITS file saved at:", file_path)
 
 A typical `FIRST` fitsfile is << 1 MB for a 5 arcmin cutout. The script automatically queries https://third.ucllnl.org/cgi-bin/firstcutout and downloads the file to the specified download path. The sample `FITS` file should show something like the following: 
 
-<img src="images/sample_first.png" alt="RadioQuery FIRST" width="200" height="200">
+<img src="radioquery/images/sample_first.png" alt="RadioQuery FIRST" width="300" height="300">
 
 
 # Directory Structure
