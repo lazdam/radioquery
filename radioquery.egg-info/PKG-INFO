@@ -1,0 +1,12 @@
+Metadata-Version: 2.2
+Name: radioquery
+Version: 0.1.0
+Summary: A package for querying radio survey images like FIRST and VLASS
+Author: Your Name
+Requires-Dist: numpy<2.0.0
+Requires-Dist: astropy>=6.0.1
+Requires-Dist: pytest
+Requires-Dist: requests
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary
