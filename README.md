@@ -58,19 +58,15 @@ A typical `FIRST` fitsfile is << 1 MB for a 5 arcmin cutout. The script automati
 After insallation, the structure of the repository should be the following: 
 ```graphql
 radioquery/
-│
-├── main.py                     # (Optional) Script entry point for additional functionality
-├── setup.py                    # Package setup file (includes post-install hooks to create directories)
+├── radioquery/             
+│   ├── __init__.py         
+│   ├── survey_configs/
+│   │   ├── __init__.py
+│   │   ├── first.py
+│   │   └── vlass.py # Comming soon!
+│   └── utils/
+│       ├── __init__.py
+│       └── helpers.py
+├── setup.py
 ├── requirements.txt
-├── README.md
-│
-├── survey_configs/             # Contains survey-specific modules
-│   ├── __init__.py
-│   ├── first.py                # FIRST survey queries using the FirstQuery class
-│   └── vlass.py                # VLASS survey queries (coming soon)
-│
-└── tests/                      # Test suite for the project
-    ├── __init__.py
-    ├── test_first.py           # Tests for the FirstQuery class
-    └── datasets/               # Contains reference datasets for testing
-        └── file.fits           # Example FITS file for comparison tests
+└── README.md
