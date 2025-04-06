@@ -181,9 +181,15 @@ class VlassQuery:
         """Wrapper for _download_file."""
         best_file,sep = self.find_nearest_file()
         print("Nearest VLASS file:", best_file, ' at a separation of: ',sep, ' from the input coordinate.')
-        print(sep.deg)
+        print(sep,type(sep))
+        file_path = None
         if sep.deg < max_sep:
-            self._download_file(best_file)
+            file_path = self._download_file(best_file)
+            return file_path,1
+        
+        return file_path,0
+
+        
 
 
 # Example usage:
@@ -192,4 +198,4 @@ if __name__ == "__main__":
     coord = SkyCoord(ra='10h50m07.270s', dec='30d40m37.52s', frame='icrs')
     download_path = os.path.expanduser("~/RQUERY/VLASS")
     vq = VlassQuery(coord=coord, download_path=download_path,overwrite=False)
-    vq.download_image()
+    file_path,success = vq.download_image()
