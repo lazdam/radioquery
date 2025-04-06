@@ -1,1 +1,2 @@
-# radioquery
+# Welcome to radioquery!
+This repository is designed as a lightweight wrapper to automatically query and download radio images from surveys such as the Very Large Array Sky Survey (VLASS) and Faint Images of the Radio Sky at Twenty-cm (FIRST) survey. This repository came to exist after CIRADA Cutouts halted development and should provide a quick and easy method of downloading the latest radio images from the main radio surveys. 
