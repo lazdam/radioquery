@@ -2,6 +2,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 import os
 import requests
+import warnings
 
 class FirstQuery:
     def __init__(self, coord: SkyCoord, download_path: str, size_arcmin: float):
@@ -54,8 +55,28 @@ class FirstQuery:
             file_path = os.path.join(self.download_path, f"FIRST_{self.format_coord_for_saving()}.fits")
             with open(file_path, "wb") as f:
                 f.write(response.content)
-            print(f"Download successful, file saved as '{file_path}'")
+            if not self.check_filesize(file_path): 
+                print(f"Download successful, file saved as '{file_path}'")
+            else: 
+                os.remove(file_path)
+                OSError("Error downloading cutout. Filesize was very small (<1KB), likely no data exists for this field.")
         else:
             raise OSError("Error downloading cutout. HTTP status code:", response.status_code)
         
-        return file_path
+        if os.path.exists(file_path): 
+            return file_path, 1
+        else: 
+            return file_path, 0
+
+    def check_filesize(self, file_path: str) -> None:
+        """Check the size of the downloaded file and warn if it's less than 1 KB."""
+        file_size = os.path.getsize(file_path)
+        if file_size < 1024:  # 1 KB = 1024 bytes
+            warnings.warn(
+                f"Warning: Downloaded file size is {file_size} bytes, which is less than 1 KB. "
+                "This might indicate an incomplete or erroneous download.",
+                UserWarning
+            )
+            return 1
+        else: 
+            return 0

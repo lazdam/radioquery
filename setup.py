@@ -27,7 +27,8 @@ setup(
         "numpy<2.0.0",    
         "astropy>=6.0.1",
         "pytest",
-        "requests" 
+        "requests",
+        "tqdm"
     ],
     cmdclass={
         'install': PostInstallCommand,

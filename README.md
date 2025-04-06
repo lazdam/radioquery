@@ -45,7 +45,7 @@ download_path = os.path.expanduser("~/RQUERY/FIRST")
 fq = FirstQuery(coord=coord, download_path=download_path, size_arcmin=5)
 
 # Download the image and get the file path
-file_path = fq.download_image()
+file_path,success = fq.download_image()
 print("Downloaded FITS file saved at:", file_path)
 ```
 
@@ -53,6 +53,32 @@ A typical `FIRST` fitsfile is << 1 MB for a 5 arcmin cutout. The script automati
 
 <img src="radioquery/images/sample_first.png" alt="RadioQuery FIRST" width="300" height="300">
 
+# Example Usage: VLASS
+Similar to above, below is an example of querying the NRAO database to download the nearest fitsfile to the specified coordinate. 
+
+**Warning**:Each file is 110 MB large, and corresponds to the median over all epochs (see:https://archive-new.nrao.edu/vlass/quicklook/ql_median_stack/). Unfortunately, no rms file is provided for the median over all epochs. However, it can be expected to be around ~80-120 uJy/beam rms. 
+
+```
+from astropy.coordinates import SkyCoord 
+from radioquery.survey_configs.vlass import VlassQuery
+import os
+
+# Define a target coordinate (ICRS)
+coord = SkyCoord(ra='10h50m07.270s', dec='30d40m37.52s', frame='icrs')
+
+# Set the download path (the ~ will be expanded to your home directory)
+download_path = os.path.expanduser("~/RQUERY/VLASS")
+
+# Create an instance of VlassQuery 
+vq = VlassQuery(coord=coord, download_path=download_path,overwrite=False)
+file_path,success = vq.download_image()
+
+print("Downloaded FITS file saved at:", file_path)
+
+```
+The sample `FITS` file should show something like the following: 
+
+<img src="radioquery/images/sample_vlass.png" alt="RadioQuery FIRST" width="300" height="300">
 
 # Directory Structure
 After insallation, the structure of the repository should be the following: 

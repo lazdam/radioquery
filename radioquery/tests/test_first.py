@@ -56,7 +56,7 @@ def test_first_download_full(test_coord):
     download_path_full='~/RQUERY/tests/full_image/'
     full_path = os.path.expanduser(download_path_full)
     fq = FirstQuery(coord=test_coord, download_path=full_path, size_arcmin=5)
-    file_path = fq.download_image()
+    file_path, success = fq.download_image()
 
     assert os.path.isfile(file_path)
 
@@ -77,6 +77,8 @@ def test_first_download_full(test_coord):
         # Compare primary HDU data
         assert_array_different(downloaded[0].data, expected[0].data)
             
+
+
         
 
 
