@@ -11,6 +11,8 @@ The current list of surveys currently supported to extract cutouts are the follo
 
 **The Lofar Ten-meter Sky Survey:** These observations are performed at ~100 GHz. The snapshots are obtained from DR2 following https://lofar-surveys.org/cutout_api_details.html. 
 
+**NVSS** These observations are performed at ~1.4 GHz. The snapshots are obtained from https://www.cv.nrao.edu/nvss/postage.shtml
+
 
 ## Installation
 
@@ -28,7 +30,9 @@ Note: During installation, the following directories will be created automatical
 
     ~/RQUERY/LOTSS # For Lofar Ten-metre Sky Survey fitsfiles
 
-    ~/RQUERY/tests
+    ~/RQUERY/NVSS # For NVSS fitsfiles
+
+    ~/RQUERY/tests # For running tests
 
 The root path can be updated in `setup.py` prior to installation. 
 ## Requirements
