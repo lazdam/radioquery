@@ -5,10 +5,11 @@ import requests
 import warnings
 
 class LotssQuery:
-    def __init__(self, coord: SkyCoord, download_path: str, size_arcmin: float):
+    def __init__(self, coord: SkyCoord, download_path: str, size_arcmin: float, overwrite: bool=False):
         self.coord = coord
         self.download_path = download_path
         self.size_arcmin = size_arcmin
+        self.overwrite=True
 
     
     def format_coord_for_query(self) -> str:
@@ -35,21 +36,36 @@ class LotssQuery:
         base_url = "https://lofar-surveys.org/"
         coord_str = self.format_coord_for_query()
         get_url = base_url + f'dr2-cutout.fits?pos={coord_str}&size={self.size_arcmin}'
-    
-        response = requests.get(get_url)
-        if response.status_code == 200:
-            os.makedirs(self.download_path, exist_ok=True)
-            file_path = os.path.join(self.download_path, f"LOTSS_{self.format_coord_for_saving()}.fits")
-            with open(file_path, "wb") as f:
-                f.write(response.content)
-            if not self.check_filesize(file_path): 
-                print(f"Download successful, file saved as '{file_path}'")
-            else: 
-                os.remove(file_path)
-                OSError("Error downloading cutout. Filesize was very small (<1KB), likely no data exists for this field.")
-        else:
-            raise OSError("Error downloading cutout. HTTP status code:", response.status_code)
+        file_path = os.path.join(self.download_path, f"LOTSS_{self.format_coord_for_saving()}.fits")
         
+        download=False
+        # Check if file already exists. If it does, make sure that overwrite is set to True.
+        if (os.path.exists(file_path) and self.overwrite): 
+            download=True
+            print("File exists but overwrite set to true, will re-download!")
+
+        if not os.path.exists(file_path): 
+            print("File does not exist. Beginning download...")
+            download=True
+        
+        if os.path.exists(file_path) and not self.overwrite: 
+            print(f"File already exists at {file_path}. Set overwrite to TRUE if you want to re-download.")
+            download=False
+        
+        if download: 
+            response = requests.get(get_url)
+            if response.status_code == 200:
+                os.makedirs(self.download_path, exist_ok=True)
+                with open(file_path, "wb") as f:
+                    f.write(response.content)
+                if not self.check_filesize(file_path): 
+                    print(f"Download successful, file saved as '{file_path}'")
+                else: 
+                    os.remove(file_path)
+                    OSError("Error downloading cutout. Filesize was very small (<1KB), likely no data exists for this field.")
+            else:
+                raise OSError("Error downloading cutout. HTTP status code:", response.status_code)
+            
         if os.path.exists(file_path): 
             return file_path, 1
         else: 

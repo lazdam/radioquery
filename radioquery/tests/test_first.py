@@ -55,7 +55,7 @@ def test_first_download_full(test_coord):
     """Test full download of a fitsfile."""
     download_path_full='~/RQUERY/tests/full_image/'
     full_path = os.path.expanduser(download_path_full)
-    fq = FirstQuery(coord=test_coord, download_path=full_path, size_arcmin=5)
+    fq = FirstQuery(coord=test_coord, download_path=full_path, size_arcmin=5,overwrite=True)
     file_path, success = fq.download_image()
 
     assert os.path.isfile(file_path)

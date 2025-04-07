@@ -117,6 +117,29 @@ Like the other two examples, the sample `FITS` file should show something like t
 <img src="radioquery/images/sample_lotss.png" alt="RadioQuery FIRST" width="300" height="300">
 
 
+# Example Usage: NVSS
+```
+
+from astropy.coordinates import SkyCoord 
+from radioquery.survey_configs.nvss import NvssQuery
+import os
+
+# Define a target coordinate (ICRS)
+coord = SkyCoord(ra='10h50m07.270s', dec='30d40m37.52s', frame='icrs')
+
+# Set the download path (the ~ will be expanded to your home directory)
+download_path = os.path.expanduser("~/RQUERY/NVSS")
+
+# Create an instance of FirstQuery with a 15 arcmin image size. 15 arcminutes is optimal for NVSS cutouts, any smaller and the cutout behaviour becomes suboptimal
+nq = NvssQuery(coord=coord, download_path=download_path, size_arcmin=15)
+
+# Download the image and get the file path
+file_path,success = nq.download_image()
+print("Downloaded FITS file saved at:", file_path)
+
+```
+<img src="radioquery/images/sample_nvss.png" alt="RadioQuery NVSS" width="300" height="300">
+
 
 # Directory Structure
 After insallation, the structure of the repository should be the following: 
@@ -129,6 +152,7 @@ radioquery/
 │   │   ├── first.py
 │   │   └── vlass.py 
 │   │   └── lotss.py ! Now supported
+│   │   └── nvss.py  ! Now supported
 │   └── utils/
 │       ├── __init__.py
 │       └── helpers.py
