@@ -9,7 +9,7 @@ radioquery.egg-info/top_level.txt
 radioquery/survey_configs/__init__.py
 radioquery/survey_configs/first.py
 radioquery/survey_configs/lotss.py
-radioquery/survey_configs/scrap.py
+radioquery/survey_configs/nvss.py
 radioquery/survey_configs/vlass.py
 radioquery/survey_configs/vlass_configs/__init__.py
 radioquery/survey_configs/vlass_configs/filtered_medians.txt

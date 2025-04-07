@@ -18,7 +18,7 @@ def test_find_nearest_file(tmp_path):
     # Set a query coordinate that should select the second candidate.
     query_coord = SkyCoord(ra='10h50m07.270s', dec='30d40m37.52s', frame='icrs')
     download_path = str(tmp_path / "downloads")
-    vq = VlassQuery(coord=query_coord, download_path=download_path)
+    vq = VlassQuery(coord=query_coord, download_path=download_path, overwrite=True)
     
     best_file, sep = vq.find_nearest_file(config_path=str(config_file))
     
@@ -53,4 +53,4 @@ def test_download_image_no_download(monkeypatch, tmp_path):
     # Call download_image with a max_sep less than dummy_sep so no download should occur.
     result = vq.download_image(max_sep=2.5)
     # When separation exceeds max_sep, download_image does not call _download_file and returns None.
-    assert result is None
+    assert result[1] == 0

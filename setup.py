@@ -14,6 +14,7 @@ class PostInstallCommand(install):
             os.path.join(base_dir, "FIRST"),
             os.path.join(base_dir, "VLASS"),
             os.path.join(base_dir, "LOTSS"),
+            os.path.join(base_dir, "NVSS"),
             os.path.join(base_dir, "tests"),
         ]
         for path in dirs_to_create:

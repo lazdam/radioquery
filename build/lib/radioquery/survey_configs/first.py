@@ -5,10 +5,11 @@ import requests
 import warnings
 
 class FirstQuery:
-    def __init__(self, coord: SkyCoord, download_path: str, size_arcmin: float):
+    def __init__(self, coord: SkyCoord, download_path: str, size_arcmin: float, overwrite: bool=False):
         self.coord = coord
         self.download_path = download_path
         self.size_arcmin = size_arcmin
+        self.overwrite = overwrite
 
     def format_coord_for_query(self) -> str:
         """Formats the coordinate for FIRST image query as 'RA+DEC' string with no delimiters."""
@@ -33,36 +34,52 @@ class FirstQuery:
             
         base_url = "https://third.ucllnl.org/cgi-bin/firstcutout"
         coord_str = self.format_coord_for_query()
-        # Prepare the form fields exactly as expected by the service:
-        params = {
-            "RA": coord_str,            # RA field contains both RA and Dec
-            "Dec": "",               # Dec field is hidden and left empty
-            "Equinox": "J2000",      # Default equinox
-            "ImageSize": str(int(self.size_arcmin)),  # Image size in arcminutes
-            "ImageType": 'FITS File',       # Must be "FITS File" to get the raw FITS file
-            "MaxInt": 10,  # Maximum intensity for scaling
-            "Epochs": "",            # Hidden field (left empty)
-            "Fieldname": "",         # Hidden field (left empty)
-            ".cgifields": "ImageType"  # Tells the server which field is being used for image type
-        }
-        print("Submitting the following POST parameters:")
-        for key, value in params.items():
-            print(f"{key}:{value}")
-        response = requests.get(base_url, params=params)
+        file_path = os.path.join(self.download_path, f"FIRST_{self.format_coord_for_saving()}.fits")
         
-        if response.status_code == 200:
-            os.makedirs(self.download_path, exist_ok=True)
-            file_path = os.path.join(self.download_path, f"FIRST_{self.format_coord_for_saving()}.fits")
-            with open(file_path, "wb") as f:
-                f.write(response.content)
-            if not self.check_filesize(file_path): 
-                print(f"Download successful, file saved as '{file_path}'")
-            else: 
-                os.remove(file_path)
-                OSError("Error downloading cutout. Filesize was very small (<1KB), likely no data exists for this field.")
-        else:
-            raise OSError("Error downloading cutout. HTTP status code:", response.status_code)
+        download=False
+        # Check if file already exists. If it does, make sure that overwrite is set to True.
+        if (os.path.exists(file_path) and self.overwrite): 
+            download=True
+            print("File exists but overwrite set to true, will re-download!")
+
+        if not os.path.exists(file_path): 
+            print("File does not exist. Beginning download...")
+            download=True
         
+        if os.path.exists(file_path) and not self.overwrite: 
+            print(f"File already exists at {file_path}. Set overwrite to TRUE if you want to re-download.")
+            download=False
+        
+        if download: 
+            # Prepare the form fields exactly as expected by the service:
+            params = {
+                "RA": coord_str,            # RA field contains both RA and Dec
+                "Dec": "",               # Dec field is hidden and left empty
+                "Equinox": "J2000",      # Default equinox
+                "ImageSize": str(int(self.size_arcmin)),  # Image size in arcminutes
+                "ImageType": 'FITS File',       # Must be "FITS File" to get the raw FITS file
+                "MaxInt": 10,  # Maximum intensity for scaling
+                "Epochs": "",            # Hidden field (left empty)
+                "Fieldname": "",         # Hidden field (left empty)
+                ".cgifields": "ImageType"  # Tells the server which field is being used for image type
+            }
+            print("Submitting the following POST parameters:")
+            for key, value in params.items():
+                print(f"{key}:{value}")
+            response = requests.get(base_url, params=params)
+            
+            if response.status_code == 200:
+                os.makedirs(self.download_path, exist_ok=True)
+                with open(file_path, "wb") as f:
+                    f.write(response.content)
+                if not self.check_filesize(file_path): 
+                    print(f"Download successful, file saved as '{file_path}'")
+                else: 
+                    os.remove(file_path)
+                    OSError("Error downloading cutout. Filesize was very small (<1KB), likely no data exists for this field.")
+            else:
+                raise OSError("Error downloading cutout. HTTP status code:", response.status_code)
+            
         if os.path.exists(file_path): 
             return file_path, 1
         else: 
