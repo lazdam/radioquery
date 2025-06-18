@@ -9,7 +9,7 @@ class LotssQuery:
         self.coord = coord
         self.download_path = download_path
         self.size_arcmin = size_arcmin
-        self.overwrite=True
+        self.overwrite=overwrite
 
     
     def format_coord_for_query(self) -> str:
