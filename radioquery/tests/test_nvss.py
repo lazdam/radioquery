@@ -3,7 +3,7 @@
 import os
 import pytest
 from astropy.coordinates import SkyCoord
-from survey_configs.nvss import NvssQuery
+from radioquery.survey_configs.nvss import NvssQuery
 from astropy.io import fits
 from numpy.testing import assert_array_equal
 import numpy as np

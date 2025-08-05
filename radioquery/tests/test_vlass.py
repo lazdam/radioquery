@@ -1,6 +1,6 @@
 from astropy.coordinates import SkyCoord,Angle
 import astropy.units as u
-from survey_configs.vlass import VlassQuery  # Adjust this import if your module is in a subpackage
+from radioquery.survey_configs.vlass import VlassQuery  # Adjust this import if your module is in a subpackage
 
 def test_find_nearest_file(tmp_path):
     """

@@ -7,7 +7,7 @@ class PostInstallCommand(install):
     def run(self):
         # Run the standard install first
         install.run(self)
-
+        
         # Create necessary directories
         base_dir = os.path.expanduser("~/RQUERY")
         dirs_to_create = [
