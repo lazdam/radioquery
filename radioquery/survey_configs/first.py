@@ -32,7 +32,7 @@ class FirstQuery:
     def download_image(self) -> str:
         """Query the FIRST cutout service and download the image as a FITS file using a POST request."""
             
-        base_url = "https://third.ucllnl.org/cgi-bin/firstcutout"
+        base_url = "https://sundog.stsci.edu/cgi-bin/firstcutout"
         coord_str = self.format_coord_for_query()
         file_path = os.path.join(self.download_path, f"FIRST_{self.format_coord_for_saving()}.fits")
         
