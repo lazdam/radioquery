@@ -100,7 +100,7 @@ The sample `FITS` file should show something like the following:
 Below is an example of how to use the LotssQuery class from the survey_configs.lotss module:
 ```
 from astropy.coordinates import SkyCoord 
-from radioquery.survey_configs.first import LotssQuery
+from radioquery.survey_configs.lotss import LotssQuery
 import os
 
 # Define a target coordinate (ICRS)

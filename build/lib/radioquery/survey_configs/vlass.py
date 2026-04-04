@@ -120,7 +120,7 @@ class VlassQuery:
         
         return best_file, sep
 
-    def _download_file(self, name_of_file: str, base_url: str = 'https://archive-new.nrao.edu/vlass/quicklook/ql_median_stack/') -> str:
+    def _download_file(self, name_of_file: str, base_url: str = 'https://vlass-dl.nrao.edu/vlass/quicklook/ql_median_stack/') -> str:
         """
         Downloads the specified VLASS file from the base URL and saves it to the download path.
         
@@ -167,6 +167,7 @@ class VlassQuery:
         
         # Make the HTTP GET request.
         if download: 
+            print(url)
             response = requests.get(url)
             if response.status_code != 200:
                 raise OSError(f"Error downloading file {name_of_file}. HTTP status code: {response.status_code}")
